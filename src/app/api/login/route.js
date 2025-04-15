@@ -8,8 +8,12 @@ export async function POST(request) {
   try {
     await connectDatabase();
 
-    const body = await request.json();  // Parse incoming JSON
-    const { username, email, password, confirmpassword } = request.body;
+    const body = await request.json(); // ✅ Correct way
+    const { username, email, password, confirmpassword } = body;
+
+    if (!username || !email || !password || !confirmpassword) {
+      return NextResponse.json({ error: "All fields are required" }, { status: 400 });
+    }
 
     if (password !== confirmpassword) {
       return NextResponse.json({ error: "Passwords do not match" }, { status: 400 });
@@ -36,3 +40,4 @@ export async function POST(request) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
+

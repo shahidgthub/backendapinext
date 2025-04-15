@@ -10,8 +10,8 @@ const Signup = () => {
 
   // Handle form submit
   const handleSignup = async (e) => {
-    e.preventDefault(); // 👈 Prevent page reload
-
+    e.preventDefault();
+  
     try {
       const res = await fetch('/api/login', {
         method: 'POST',
@@ -22,12 +22,12 @@ const Signup = () => {
           username,
           email,
           password,
-          confirmPassword, // 👈 use actual state
+          confirmpassword: confirmPassword,
         }),
       });
-
+  
       const data = await res.json();
-
+  
       if (!res.ok) {
         console.error("Signup error:", data.error);
         alert(data.error);
@@ -39,6 +39,7 @@ const Signup = () => {
       console.error("Unexpected error:", err);
     }
   };
+  
 
   return (
     <div className="flex justify-center items-center h-screen">
