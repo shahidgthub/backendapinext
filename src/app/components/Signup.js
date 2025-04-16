@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import Login from './Login'
 
 const Signup = () => {
   // State variables
@@ -42,6 +43,7 @@ const Signup = () => {
   
 
   return (
+    <>
     <div className="flex justify-center items-center h-screen">
       <form onSubmit={handleSignup} className="bg-gray-100 p-6 rounded-lg shadow-md w-1/3">
         <h1 className="text-2xl mb-4 text-center">Signup</h1>
@@ -97,6 +99,8 @@ const Signup = () => {
         </button>
       </form>
     </div>
+    <Login/>
+    </>
   );
 };
 
