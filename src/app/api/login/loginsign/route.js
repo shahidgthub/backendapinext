@@ -1,38 +1,33 @@
-import ConnectDatabase from "../../../../../lib/db";
-import User from "../../../../../model/User";
-import bcrypt from 'bcryptjs';
+// app/api/signin/route.js
+import User from "../../../../model/User";
+import connectDatabase from "../../../../lib/db";
+import bcrypt from "bcrypt";
+import { NextResponse } from "next/server";
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method Not Allowed' });
-  }
-
-  await ConnectDatabase();
-
-  const { email, password } = req.body;
-
+export async function POST(request) {
   try {
+    await connectDatabase();
+
+    const { email, password } = await request.json();
+
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
-
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
     }
 
-    // Simulate token (replace with real JWT later)
-    return res.status(200).json({
-      message: 'Login successful',
-      token: 'fake-jwt-token',
-      user: { email: user.email, name: user.name },
-    });
+    return NextResponse.json({
+      message: "Login successful",
+      user: { email: user.email, username: user.username },
+    }, { status: 200 });
 
   } catch (error) {
-    console.error('Login error:', error);
-    return res.status(500).json({ message: 'Server error' });
+    console.error("Login error:", error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
