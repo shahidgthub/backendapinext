@@ -8,7 +8,7 @@ const Login = () => {
     e.preventDefault();
   
     try {
-      const res = await fetch('/api/login/loginsign', {
+      const res = await fetch('/api/sign', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -22,14 +22,12 @@ const Login = () => {
         // ✅ Login successful
         alert('Login successful!');
         console.log('User:', data.user);
-        console.log('Token:', data.token);
   
-        // Optional: Save token
-        localStorage.setItem('token', data.token);
+        // Optional: Store user info (like ID or email)
+        localStorage.setItem('user', JSON.stringify(data.user));
   
-        // Optional: Redirect (if using next/router)
-        // import { useRouter } from 'next/router';
-        // const router = useRouter();
+        // Optional: Redirect
+        // const router = useRouter(); // remember to move this to top of component if you uncomment
         // router.push('/dashboard');
   
       } else {
@@ -41,6 +39,7 @@ const Login = () => {
       alert('Something went wrong. Please try again.');
     }
   };
+  
   
   
 
